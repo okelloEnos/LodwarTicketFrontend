@@ -17,8 +17,17 @@ async function handleResponse<T>(res: Response): Promise<T> {
     return (text ? JSON.parse(text) : undefined) as T;
 }
 
-export async function fetchTickets(): Promise<PageResponse<Ticket>> {
-    const res = await fetch(`${BASE_URL}`);
+export interface FetchTicketsParams {
+    page?: number;
+    limit?: number;
+}
+
+export async function fetchTickets(params?: FetchTicketsParams): Promise<PageResponse<Ticket>> {
+    const query = new URLSearchParams();
+    if (params?.page !== undefined) query.set('page', String(params.page));
+    if (params?.limit !== undefined) query.set('limit', String(params.limit));
+
+    const res = await fetch(`${BASE_URL}?${query.toString()}`);
     return handleResponse<PageResponse<Ticket>>(res);
 }
 
