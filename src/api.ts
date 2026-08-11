@@ -1,6 +1,6 @@
-import type { PageResponse, Ticket } from './types';
+import type { CreateTicketRequest, PageResponse, Ticket } from './types';
 
-const BASE_URL = 'http://localhost:8080/ticketss';
+const BASE_URL = 'http://localhost:8080/tickets';
 
 async function handleResponse<T>(res: Response): Promise<T> {
     if (!res.ok) {
@@ -20,4 +20,15 @@ async function handleResponse<T>(res: Response): Promise<T> {
 export async function fetchTickets(): Promise<PageResponse<Ticket>> {
     const res = await fetch(`${BASE_URL}`);
     return handleResponse<PageResponse<Ticket>>(res);
+}
+
+export async function createTicket(
+    payload: CreateTicketRequest,
+): Promise<Ticket> {
+    const res = await fetch(BASE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    });
+    return handleResponse<Ticket>(res);
 }

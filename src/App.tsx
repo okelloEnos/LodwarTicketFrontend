@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { fetchTickets } from './api';
-import type { Ticket } from './types';
+import { createTicket, fetchTickets } from './api';
+import type { CreateTicketRequest, Ticket } from './types';
 import TicketList from './components/AllTickets';
+import CreateTicketForm from './components/CreateTicketForm';
 import './App.css';
 
 export default function App() {
@@ -30,6 +31,11 @@ export default function App() {
     })();
   }, []);
 
+  async function handleCreate(payload: CreateTicketRequest) {
+    await createTicket(payload);
+    await loadTickets();
+  }
+
   return (
       <div className="app">
         <header className="app-header">
@@ -37,6 +43,7 @@ export default function App() {
         </header>
 
         <main className="app-layout">
+          <CreateTicketForm onCreate={handleCreate} />
           <TicketList
               tickets={tickets}
               loading={loading}

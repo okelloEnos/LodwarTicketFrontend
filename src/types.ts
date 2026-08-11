@@ -10,6 +10,12 @@ export interface Ticket {
     createdAt: string;
 }
 
+export interface CreateTicketRequest {
+    title: string;
+    description?: string;
+    priority?: TicketPriority;
+}
+
 export interface PageResponse<T> {
     data: T[];
     pagination: {
