@@ -4,12 +4,14 @@ interface Props {
     tickets: Ticket[];
     loading: boolean;
     error: string | null;
+    onSelectTicket: (ticket: Ticket) => void;
 }
 
 export default function TicketList({
     tickets,
     loading,
     error,
+    onSelectTicket,
 }: Props) {
     return (
         <div className="card">
@@ -24,8 +26,15 @@ export default function TicketList({
             ) : (
                 <ul className="ticket-list">
                     {tickets.map((ticket) => (
-                        <li key={ticket.id}>
-                            {ticket.title} - {ticket.status} ({ticket.priority})
+                        <li key={ticket.id} className="ticket-item">
+                            <span>{ticket.title} - {ticket.status} ({ticket.priority})</span>
+                            <button
+                                className="edit-btn"
+                                onClick={() => onSelectTicket(ticket)}
+                                title="Edit ticket"
+                            >
+                                ✎
+                            </button>
                         </li>
                     ))}
                 </ul>

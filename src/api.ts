@@ -1,4 +1,4 @@
-import type { CreateTicketRequest, PageResponse, Ticket } from './types';
+import type { CreateTicketRequest, PageResponse, Ticket, UpdateTicketRequest } from './types';
 
 const BASE_URL = 'http://localhost:8080/tickets';
 
@@ -27,6 +27,18 @@ export async function createTicket(
 ): Promise<Ticket> {
     const res = await fetch(BASE_URL, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+    });
+    return handleResponse<Ticket>(res);
+}
+
+export async function updateTicket(
+    id: string,
+    payload: UpdateTicketRequest,
+): Promise<Ticket> {
+    const res = await fetch(`${BASE_URL}/${id}`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
     });

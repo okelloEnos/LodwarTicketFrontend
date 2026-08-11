@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
-import { createTicket, fetchTickets } from './api';
-import type { CreateTicketRequest, Ticket } from './types';
+import { createTicket, fetchTickets, updateTicket } from './api';
+import type { CreateTicketRequest, Ticket, TicketStatus, TicketPriority } from './types';
 import TicketList from './components/AllTickets';
 import CreateTicketForm from './components/CreateTicketForm';
+import TicketModal from './components/TicketModal';
 import './App.css';
 
 export default function App() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(false);
   const [listError, setListError] = useState<string | null>(null);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
 
   async function loadTickets() {
     setLoading(true);
@@ -36,6 +38,12 @@ export default function App() {
     await loadTickets();
   }
 
+  async function handleUpdate(status?: TicketStatus, priority?: TicketPriority) {
+    if (!selectedTicket) return;
+    await updateTicket(selectedTicket.id, { status, priority });
+    await loadTickets();
+  }
+
   return (
       <div className="app">
         <header className="app-header">
@@ -43,13 +51,22 @@ export default function App() {
         </header>
 
         <main className="app-layout">
-          <CreateTicketForm onCreate={handleCreate} />
           <TicketList
               tickets={tickets}
               loading={loading}
               error={listError}
+              onSelectTicket={setSelectedTicket}
           />
+          <CreateTicketForm onCreate={handleCreate} />
         </main>
+
+        {selectedTicket && (
+            <TicketModal
+                ticket={selectedTicket}
+                onClose={() => setSelectedTicket(null)}
+                onUpdate={handleUpdate}
+            />
+        )}
       </div>
   );
 }

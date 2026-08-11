@@ -16,6 +16,11 @@ export interface CreateTicketRequest {
     priority?: TicketPriority;
 }
 
+export interface UpdateTicketRequest {
+    status?: TicketStatus;
+    priority?: TicketPriority;
+}
+
 export interface PageResponse<T> {
     data: T[];
     pagination: {
