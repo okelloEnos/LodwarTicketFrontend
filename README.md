@@ -1,75 +1,60 @@
-# React + TypeScript + Vite
+# Mini Ticket Tracker Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+It provides a simple interface for creating, viewing and updating tickets.
 
-Currently, two official plugins are available:
+## Setup and Run Instructions
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Prerequisites
 
-## React Compiler
+Make sure you have the following installed:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Node.js
+* npm
 
-## Expanding the ESLint configuration
+### Setup
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Clone the repository and navigate to the frontend project:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+cd LodwarTicketFrontend
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Install the dependencies:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
+
+The frontend expects the backend API to be running at:
+
+```text
+http://localhost:8080
+```
+
+The API endpoint is currently configured in `src/api.ts`:
+
+```typescript
+const BASE_URL = 'http://localhost:8080/tickets';
+```
+
+Make sure the backend is running before starting the frontend.
+
+### Running the Application
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+
+## Decisions & Tradeoffs
+
+1. React's built-in state management because the application has a relatively small amount of shared state. 
+2. The native Fetch API was used instead of adding a data-fetching library to keep the implementation lightweight.
+3. The API base URL is currently hardcoded to `localhost`, which keeps local setup simple but should be moved to an environment variable for different environments. 
+4. The ticket edit functionality is implemented using a modal so users can update status and priority without leaving the ticket list.
+
+
+With more time: 
+I would introduce environment-based API configuration, add a dedicated API layer and add more comprehensive error handling and accessibility improvements plus responsiveness.
