@@ -24,11 +24,17 @@ export default function TicketList({
     error,
     onSelectTicket,
     onPageChange,
-    onLimitChange,
 }: Props) {
     return (
         <div className="card">
             <h2>Tickets</h2>
+
+            <div className="ticket-headers">
+                <span className="ticket-title">Title</span>
+                <span className="ticket-status">Status</span>
+                <span className="ticket-priority">Priority</span>
+                <span className="ticket-action-header" />
+            </div>
 
             {error && <p className="error-text">{error}</p>}
 
@@ -41,7 +47,9 @@ export default function TicketList({
                     <ul className="ticket-list">
                         {tickets.map((ticket) => (
                             <li key={ticket.id} className="ticket-item">
-                                <span>{ticket.title} - {ticket.status} ({ticket.priority})</span>
+                                <span className="ticket-title">{ticket.title}</span>
+                                <span className={`ticket-status status-${ticket.status.toLowerCase()}`}>{ticket.status.replace('_',' ')}</span>
+                                <span className={`ticket-priority priority-${ticket.priority.toLowerCase()}`}>{ticket.priority}</span>
                                 <button
                                     className="edit-btn"
                                     onClick={() => onSelectTicket(ticket)}
@@ -63,11 +71,10 @@ export default function TicketList({
 
                             <div className="page-numbers">
                                 {
-                                  // render compact pagination with ellipses
                                   (() => {
                                     const total = pagination.totalPages;
                                     const current = pagination.page;
-                                    const maxButtons = 7; // total buttons including first/last
+                                    const maxButtons = 7;
                                     if (total <= maxButtons) {
                                       return Array.from({ length: total }, (_, i) => i + 1).map((pageNum) => (
                                         <button
@@ -87,7 +94,6 @@ export default function TicketList({
                                     let left = Math.max(2, current - side);
                                     let right = Math.min(total - 1, current + side);
 
-                                    // shift window when near bounds
                                     if (current - 1 <= side) {
                                       left = 2;
                                       right = maxButtons - 2;
@@ -128,16 +134,6 @@ export default function TicketList({
                             >
                                 Next
                             </button>
-
-                            <select
-                                value={pagination.limit}
-                                onChange={(e) => onLimitChange(Number(e.target.value))}
-                            >
-                                <option value={5}>5 / page</option>
-                                <option value={10}>10 / page</option>
-                                <option value={20}>20 / page</option>
-                                <option value={50}>50 / page</option>
-                            </select>
                         </div>
                     )}
                 </>

@@ -30,10 +30,19 @@ export default function TicketModal({ ticket, onClose, onUpdate }: Props) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>{ticket.title}</h2>
+          <h3>Edit Ticket</h3>
           <button className="close-btn" onClick={onClose} disabled={loading}>
             ✕
           </button>
+        </div>
+
+        <div className="modal-ticket-info">
+          <div className="ticket-info-title">{ticket.title}</div>
+          {ticket.description && (
+            <div className="ticket-info-desc">
+              {ticket.description}
+            </div>
+          )}
         </div>
 
         {error && <p className="error-text">{error}</p>}
@@ -59,10 +68,10 @@ export default function TicketModal({ ticket, onClose, onUpdate }: Props) {
         </div>
 
         <div className="modal-footer">
-          <button onClick={handleSave} disabled={loading}>
+          <button onClick={handleSave} disabled={loading} className="btn-save">
             {loading ? 'Saving…' : 'Save'}
           </button>
-          <button onClick={onClose} disabled={loading}>
+          <button onClick={onClose} disabled={loading} className="btn-cancel">
             Cancel
           </button>
         </div>

@@ -9,7 +9,6 @@ async function handleResponse<T>(res: Response): Promise<T> {
             const body = await res.json();
             if (body?.message) message = body.message;
         } catch {
-            // response had no JSON body — keep the default message
         }
         throw new Error(message);
     }

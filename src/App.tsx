@@ -22,7 +22,6 @@ export default function App() {
       const result = await fetchTickets({ page, limit });
       setTickets(result.data);
 
-      // Ensure pagination has a valid totalPages value
       const p = result.pagination || { page, limit, total: result.data.length, totalPages: 1 };
       const computedTotalPages =
         p.totalPages && p.totalPages > 0
@@ -66,7 +65,7 @@ export default function App() {
       return;
     }
     if (newPage < 1) return;
-    if (newPage > pagination.totalPages) return; // prevent navigating past last page
+    if (newPage > pagination.totalPages) return;
     setPage(newPage);
   }
 
